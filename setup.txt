@@ -1,0 +1,81 @@
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install apache2
+sudo apt-get install php
+sudo apt-get install mysql-server 
+sudo mysql_secure_installation
+  Enter current password for root (enter for none): //enter nothing
+  Set root password? [Y/n] //y
+sudo apt-get install php-mysql
+sudo mysql -u root -p
+  use mysql;
+  SELECT User,Host FROM user;
+  CREATE USER 'IfthiSWrks'@'%' IDENTIFIED BY '';
+  SELECT User,Host FROM user;
+  GRANT ALL PRIVILEGES ON *.* TO 'IfthiSWrks'@'%' with grant option;
+  flush privileges;
+  SET PASSWORD FOR 'IfthiSWrks'@'%'=  PASSWORD('d@T@IhopewrKS');
+  exit
+sudo mysql -u IfthiSWrks -p
+create database ecommerce2;
+exit
+cat /media/pi/USB20FD/ecommerce2.sql | mysql -u IfthiSWrks -p -D ecommerce2
+
+cd
+cd /var/www
+sudo chown pi html
+
+sudo a2enmod rewrite
+systemctl restart apache2
+  450 change regular and and admin config user/pass
+
+cd
+cd /etc/apache2
+sudo nano apache2.conf
+  <Directory /var/www/>
+        Options Indexes FollowSymLinks
+        AllowOverride ALL
+        Require all granted
+  </Directory>
+
+sudo nano sites-enabled/000-default.conf
+  //comment out everything
+  //add
+  <VirtualHost *:80>
+    ServerAdmin codyfox@codefox.tech
+    ServerName codefox.tech
+    ServerAlias www.codefox.tech
+    DocumentRoot /var/www/html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+  </VirtualHost>
+
+
+
+//security
+sudo apt-get install ufw
+sudo ufw enable
+sudo ufw app list
+sudo ufw status
+sudo ufw allow 80
+sudo ufw allow 443
+sudo ufw deny ssh
+sudo ufw status
+sudo ufw reload
+
+//ssl
+sudo sed -i "$ a\deb http://ftp.debian.org/debian stretch-backports main" /etc/apt/sources.list
+sudo apt-get update
+sudo apt install python-certbot-apache -t stretch-backports
+sudo apache2ctl configtest
+sudo systemctl reload apache2
+sudo certbot --apache -d codefox.tech -d www.codefox.tech
+sudo certbot renew --dry-run
+
+sudo nano /etc/hosts
+  //127.0.0.1	localhost
+  127.0.0.1	codefox.tech
+
+//for final.php
+sudo apt-get install php-curl
+systemctl restart apache2
