@@ -10,16 +10,16 @@ sudo apt-get install php-mysql
 sudo mysql -u root -p
   use mysql;
   SELECT User,Host FROM user;
-  CREATE USER 'IfthiSWrks'@'%' IDENTIFIED BY '';
+  CREATE USER YourPAssword'@'%' IDENTIFIED BY '';
   SELECT User,Host FROM user;
-  GRANT ALL PRIVILEGES ON *.* TO 'IfthiSWrks'@'%' with grant option;
+  GRANT ALL PRIVILEGES ON *.* TO 'YourPAssword'@'%' with grant option;
   flush privileges;
-  SET PASSWORD FOR 'IfthiSWrks'@'%'=  PASSWORD('d@T@IhopewrKS');
+  SET PASSWORD FOR 'YourPAssword'@'%'=  PASSWORD('d@T@IhopewrKS');
   exit
-sudo mysql -u IfthiSWrks -p
-create database ecommerce2;
+sudo mysql -u YourPAssword -p
+create database YourDatabase;
 exit
-cat /media/pi/USB20FD/ecommerce2.sql | mysql -u IfthiSWrks -p -D ecommerce2
+cat /media/pi/USB20FD/YourDatabase.sql | mysql -u YourPAssword -p -D YourDatabase
 
 cd
 cd /var/www
